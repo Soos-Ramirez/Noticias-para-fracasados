@@ -60,8 +60,22 @@
             <button onclick="iniciarSesion()">Iniciar sesión</button>
         </div>
 
-        <div id="noticias"></div>
-        
+        <!-- Noticias visibles directamente -->
+        <div class="noticia">
+            <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
+            <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
+        </div>
+
+        <div class="noticia">
+            <h2>El regreso de los otakus sin bañarse al LoL</h2>
+            <p>Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche.</p>
+        </div>
+
+        <div class="noticia">
+            <h2>Kirchnerismo y su relación con los fracasados</h2>
+            <p>Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K.</p>
+        </div>
+
         <div class="nueva-noticia">
             <h2>Publica tu noticia</h2>
             <input type="text" id="titulo" placeholder="Título">
@@ -76,45 +90,11 @@
     </div>
 
     <script>
-        let usuarioActual = localStorage.getItem("usuario") || null;
-        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
-        let noticias = JSON.parse(localStorage.getItem("noticias")) || [
-            { titulo: "Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra", contenido: "Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca." },
-            { titulo: "El regreso de los otakus sin bañarse al LoL", contenido: "Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche." },
-            { titulo: "Kirchnerismo y su relación con los fracasados", contenido: "Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K." }
-        ];
-
-        // Mostrar noticias al cargar
-        function mostrarNoticias() {
-            let noticiasDiv = document.getElementById("noticias");
-            noticiasDiv.innerHTML = "";
-            noticias.forEach(noticia => {
-                let div = document.createElement("div");
-                div.classList.add("noticia");
-                div.innerHTML = `<h2>${noticia.titulo}</h2><p>${noticia.contenido}</p>`;
-                noticiasDiv.appendChild(div);
-            });
-        }
-
-        // Agregar una nueva noticia
-        function agregarNoticia() {
-            if (!usuarioActual) return alert("Debes iniciar sesión para publicar noticias.");
-            let titulo = document.getElementById("titulo").value;
-            let contenido = document.getElementById("contenido").value;
-            if (titulo.trim() === "" || contenido.trim() === "") return alert("Completa todos los campos.");
-            noticias.push({ titulo, contenido });
-            localStorage.setItem("noticias", JSON.stringify(noticias));
-            mostrarNoticias();
-        }
-
         // Funciones para registro e inicio de sesión
         function registrarse() {
             let email = document.getElementById("registro-email").value;
             let password = document.getElementById("registro-password").value;
             if (email.trim() === "" || password.trim() === "") return alert("Completa todos los campos.");
-            if (usuarios[email]) return alert("Este correo ya está registrado.");
-            usuarios[email] = password;
-            localStorage.setItem("usuarios", JSON.stringify(usuarios));
             alert("Registro exitoso. Ahora puedes iniciar sesión.");
         }
 
@@ -122,14 +102,8 @@
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
             if (email.trim() === "" || password.trim() === "") return alert("Completa los campos de inicio de sesión.");
-            if (usuarios[email] !== password) return alert("Correo o contraseña incorrectos.");
-            usuarioActual = email;
-            localStorage.setItem("usuario", usuarioActual);
-            alert("Sesión iniciada como " + usuarioActual);
+            alert("Sesión iniciada como " + email);
         }
-
-        // Cargar noticias al inicio
-        mostrarNoticias();
 
         // Cargar el sistema de comentarios de Utterances
         const script = document.createElement('script');
