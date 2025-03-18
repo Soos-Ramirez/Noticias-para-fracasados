@@ -103,29 +103,29 @@
         function registrarUsuario() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
-            if (email in usuarios) {
+            if (usuarios[email]) {
                 alert("Este correo ya está registrado.");
             } else {
                 const palabras1 = ["Otaku", "Gamer", "Waifu", "Toxic", "Noob", "Tryhard", "Bronce", "Friki", "Casual", "Weeb", "Otome", "AFK"];
                 const palabras2 = ["Legendario", "Deluxe", "Definitivo", "Inmortal", "Intenso", "Supremo", "Absoluto", "Místico", "Fatal", "Invencible", "Extremo"];
                 let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
-                usuarios[email] = { password, nombre };
+                usuarios[email] = { password: password, nombre: nombre };
                 localStorage.setItem("usuarios", JSON.stringify(usuarios));
-                alert("Registro exitoso. Tu usuario es: " + nombre);
                 usuarioActual = nombre;
                 localStorage.setItem("usuarioActual", usuarioActual);
                 document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+                alert("Registro exitoso. Tu usuario es: " + nombre);
             }
         }
 
         function iniciarSesion() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
-            if (email in usuarios && usuarios[email].password === password) {
+            if (usuarios[email] && usuarios[email].password === password) {
                 usuarioActual = usuarios[email].nombre;
                 localStorage.setItem("usuarioActual", usuarioActual);
-                alert("Inicio de sesión exitoso. Bienvenido, " + usuarioActual);
                 document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+                alert("Inicio de sesión exitoso. Bienvenido, " + usuarioActual);
             } else {
                 alert("Correo o contraseña incorrectos.");
             }
