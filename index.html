@@ -57,21 +57,6 @@
         
         <div id="noticias">
             <div class="noticia">
-                <h2>Jugador de LoL alcanza rango Diamante, pero sigue sin ducharse</h2>
-                <p>Un joven de 23 años ha logrado llegar a Diamante en League of Legends, pero sus familiares piden ayuda para que se bañe.</p>
-            </div>
-            
-            <div class="noticia">
-                <h2>Nuevo impuesto para los gamers: el kirchnerismo propone el "Gamer Plus"</h2>
-                <p>El gobierno estudia un impuesto especial para jugadores de LoL, Dota y Genshin Impact. "Si tienen dinero para skins, tienen para aportar", afirman.</p>
-            </div>
-            
-            <div class="noticia">
-                <h2>Encuentran otaku en estado de hibernación en una cueva llena de Doritos</h2>
-                <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
-            </div>
-            
-            <div class="noticia">
                 <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
                 <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
             </div>
@@ -95,6 +80,7 @@
     <script>
         let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
         let usuarioActual = localStorage.getItem("usuarioActual") || null;
+        let comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
 
         if (usuarioActual) {
             document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
@@ -106,8 +92,8 @@
             if (usuarios[email]) {
                 alert("Este correo ya está registrado.");
             } else {
-                const palabras1 = ["Otaku", "Gamer", "Waifu", "Toxic", "Noob", "Tryhard", "Bronce", "Friki", "Casual", "Weeb", "Otome", "AFK"];
-                const palabras2 = ["Legendario", "Deluxe", "Definitivo", "Inmortal", "Intenso", "Supremo", "Absoluto", "Místico", "Fatal", "Invencible", "Extremo"];
+                const palabras1 = ["Otaku", "Gamer", "Weeb", "Toxic", "Noob", "Tryhard"];
+                const palabras2 = ["Legendario", "Supremo", "Místico", "Fatal", "Invencible"];
                 let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
                 usuarios[email] = { password: password, nombre: nombre };
                 localStorage.setItem("usuarios", JSON.stringify(usuarios));
@@ -130,6 +116,29 @@
                 alert("Correo o contraseña incorrectos.");
             }
         }
+
+        function agregarComentario() {
+            let texto = document.getElementById("comentario").value;
+            if (texto.trim() === "") return alert("El comentario no puede estar vacío.");
+            if (!usuarioActual) return alert("Debes iniciar sesión para comentar.");
+            
+            let comentario = { usuario: usuarioActual, texto: texto };
+            comentarios.push(comentario);
+            localStorage.setItem("comentarios", JSON.stringify(comentarios));
+            mostrarComentarios();
+        }
+
+        function mostrarComentarios() {
+            let lista = document.getElementById("lista-comentarios");
+            lista.innerHTML = "";
+            comentarios.forEach(com => {
+                let p = document.createElement("p");
+                p.innerHTML = `<strong>${com.usuario}:</strong> ${com.texto}`;
+                lista.appendChild(p);
+            });
+        }
+
+        mostrarComentarios();
     </script>
 </body>
 </html>
