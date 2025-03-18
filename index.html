@@ -87,6 +87,7 @@
         ];
         let comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
 
+        // Función para mostrar las noticias
         function mostrarNoticias() {
             let noticiasDiv = document.getElementById("noticias");
             noticiasDiv.innerHTML = "";
@@ -98,6 +99,7 @@
             });
         }
 
+        // Función para mostrar los comentarios almacenados en localStorage
         function mostrarComentarios() {
             let listaComentarios = document.getElementById("lista-comentarios");
             listaComentarios.innerHTML = "";
@@ -108,6 +110,7 @@
             });
         }
 
+        // Función para agregar una nueva noticia
         function agregarNoticia() {
             if (!usuarioActual) return alert("Debes iniciar sesión para publicar noticias.");
             let titulo = document.getElementById("titulo").value;
@@ -118,6 +121,7 @@
             mostrarNoticias();
         }
 
+        // Función para registrar un nuevo usuario
         function registrarse() {
             let email = document.getElementById("registro-email").value;
             let password = document.getElementById("registro-password").value;
@@ -128,6 +132,7 @@
             alert("Registro exitoso. Ahora puedes iniciar sesión.");
         }
 
+        // Función para iniciar sesión
         function iniciarSesion() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
@@ -138,6 +143,7 @@
             alert("Sesión iniciada como " + usuarioActual);
         }
 
+        // Función para agregar un comentario
         function agregarComentario() {
             if (!usuarioActual) return alert("Debes iniciar sesión para comentar.");
             let comentarioTexto = document.getElementById("comentario").value;
@@ -147,6 +153,7 @@
             mostrarComentarios();
         }
 
+        // Cargar noticias y comentarios al inicio
         mostrarNoticias();
         mostrarComentarios();
     </script>
