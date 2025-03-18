@@ -46,6 +46,13 @@
     <div class="container">
         <h1>Noticias para Fracasados</h1>
         
+        <div class="registro">
+            <h2>Registrarse</h2>
+            <input type="email" id="registro-email" placeholder="Correo electrónico">
+            <input type="password" id="registro-password" placeholder="Contraseña">
+            <button onclick="registrarse()">Registrarse</button>
+        </div>
+        
         <div class="login">
             <h2>Iniciar sesión</h2>
             <input type="email" id="email" placeholder="Correo electrónico">
@@ -72,6 +79,7 @@
     
     <script>
         let usuarioActual = localStorage.getItem("usuario") || null;
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
         let noticias = JSON.parse(localStorage.getItem("noticias")) || [
             { titulo: "Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra", contenido: "Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca." },
             { titulo: "El regreso de los otakus sin bañarse al LoL", contenido: "Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche." },
@@ -99,10 +107,21 @@
             mostrarNoticias();
         }
 
+        function registrarse() {
+            let email = document.getElementById("registro-email").value;
+            let password = document.getElementById("registro-password").value;
+            if (email.trim() === "" || password.trim() === "") return alert("Completa todos los campos.");
+            if (usuarios[email]) return alert("Este correo ya está registrado.");
+            usuarios[email] = password;
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+            alert("Registro exitoso. Ahora puedes iniciar sesión.");
+        }
+
         function iniciarSesion() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
             if (email.trim() === "" || password.trim() === "") return alert("Completa los campos de inicio de sesión.");
+            if (usuarios[email] !== password) return alert("Correo o contraseña incorrectos.");
             usuarioActual = email;
             localStorage.setItem("usuario", usuarioActual);
             alert("Sesión iniciada como " + usuarioActual);
