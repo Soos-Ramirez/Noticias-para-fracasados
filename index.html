@@ -144,13 +144,13 @@
         }
 
         // Función para agregar un comentario
-        function agregarComentario() {
-            if (!usuarioActual) return alert("Debes iniciar sesión para comentar.");
-            let comentarioTexto = document.getElementById("comentario").value;
-            if (comentarioTexto.trim() === "") return alert("Escribe un comentario.");
-            comentarios.push({ usuario: usuarioActual, texto: comentarioTexto });
-            localStorage.setItem("comentarios", JSON.stringify(comentarios));
-            mostrarComentarios();
+<script src="https://utteranc.es/client.js"
+        repo="Soos-Ramirez/Noticias-para-fracasados"
+        issue-term="pathname"
+        theme="github-dark"
+        crossorigin="anonymous"
+        async>
+</script>
         }
 
         // Cargar noticias y comentarios al inicio
