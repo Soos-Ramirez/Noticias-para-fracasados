@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias para Fracasados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #ffcc00;
+        }
+        .noticia {
+            margin-top: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #555;
+        }
+        .noticia:last-child {
+            border-bottom: none;
+        }
+        .comentarios, .nueva-noticia, .registro {
+            margin-top: 20px;
+            text-align: left;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-top: 5px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Noticias para Fracasados</h1>
+        
+        <div class="registro">
+            <h2>Registro / Inicio de Sesión</h2>
+            <input type="email" id="email" placeholder="Correo electrónico">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button onclick="registrarUsuario()">Registrarse</button>
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
+            <p id="usuario"></p>
+        </div>
+        
+        <div id="noticias">
+            <div class="noticia">
+                <h2>Jugador de LoL alcanza rango Diamante, pero sigue sin ducharse</h2>
+                <p>Un joven de 23 años ha logrado llegar a Diamante en League of Legends, pero sus familiares piden ayuda para que se bañe.</p>
+            </div>
+            
+            <div class="noticia">
+                <h2>Nuevo impuesto para los gamers: el kirchnerismo propone el "Gamer Plus"</h2>
+                <p>El gobierno estudia un impuesto especial para jugadores de LoL, Dota y Genshin Impact. "Si tienen dinero para skins, tienen para aportar", afirman.</p>
+            </div>
+            
+            <div class="noticia">
+                <h2>Encuentran otaku en estado de hibernación en una cueva llena de Doritos</h2>
+                <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
+            </div>
+            
+            <div class="noticia">
+                <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
+                <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
+            </div>
+        </div>
+        
+        <div class="nueva-noticia">
+            <h2>Publica tu noticia</h2>
+            <input type="text" id="titulo" placeholder="Título">
+            <textarea id="contenido" placeholder="Escribe la noticia aquí..."></textarea>
+            <button onclick="agregarNoticia()">Publicar</button>
+        </div>
+        
+        <div class="comentarios">
+            <h2>Comentarios</h2>
+            <textarea id="comentario" placeholder="Escribe tu comentario..."></textarea>
+            <button onclick="agregarComentario()">Comentar</button>
+            <div id="lista-comentarios"></div>
+        </div>
+    </div>
+    
+    <script>
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
+        let usuarioActual = localStorage.getItem("usuarioActual") || null;
+
+        if (usuarioActual) {
+            document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+        }
+
+        function registrarUsuario() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            if (email in usuarios) {
+                alert("Este correo ya está registrado.");
+            } else {
+                const palabras1 = ["Otaku", "Gamer", "Waifu", "Toxic", "Noob", "Tryhard", "Bronce", "Friki", "Casual", "Weeb", "Otome", "AFK"];
+                const palabras2 = ["Legendario", "Deluxe", "Definitivo", "Inmortal", "Intenso", "Supremo", "Absoluto", "Místico", "Fatal", "Invencible", "Extremo"];
+                let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
+                usuarios[email] = { password, nombre };
+                localStorage.setItem("usuarios", JSON.stringify(usuarios));
+                alert("Registro exitoso. Tu usuario es: " + nombre);
+                usuarioActual = nombre;
+                localStorage.setItem("usuarioActual", usuarioActual);
+                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+            }
+        }
+
+        function iniciarSesion() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            if (email in usuarios && usuarios[email].password === password) {
+                usuarioActual = usuarios[email].nombre;
+                localStorage.setItem("usuarioActual", usuarioActual);
+                alert("Inicio de sesión exitoso. Bienvenido, " + usuarioActual);
+                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+            } else {
+                alert("Correo o contraseña incorrectos.");
+            }
+        }
+    </script>
+</body>
+</html>
