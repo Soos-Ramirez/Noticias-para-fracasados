@@ -68,15 +68,13 @@
             <textarea id="contenido" placeholder="Escribe la noticia aquí..."></textarea>
             <button onclick="agregarNoticia()">Publicar</button>
         </div>
-        
-        <div class="comentarios">
-            <h2>Comentarios</h2>
-            <textarea id="comentario" placeholder="Escribe tu comentario..."></textarea>
-            <button onclick="agregarComentario()">Comentar</button>
-            <div id="lista-comentarios"></div>
+
+        <!-- Aquí se coloca el script de Utterances para los comentarios -->
+        <div id="utterances-comments">
+            <!-- Los comentarios serán cargados aquí -->
         </div>
     </div>
-    
+
     <script>
         let usuarioActual = localStorage.getItem("usuario") || null;
         let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
@@ -85,9 +83,8 @@
             { titulo: "El regreso de los otakus sin bañarse al LoL", contenido: "Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche." },
             { titulo: "Kirchnerismo y su relación con los fracasados", contenido: "Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K." }
         ];
-        let comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
 
-        // Función para mostrar las noticias
+        // Mostrar noticias al cargar
         function mostrarNoticias() {
             let noticiasDiv = document.getElementById("noticias");
             noticiasDiv.innerHTML = "";
@@ -99,7 +96,7 @@
             });
         }
 
-        // Función para agregar una nueva noticia
+        // Agregar una nueva noticia
         function agregarNoticia() {
             if (!usuarioActual) return alert("Debes iniciar sesión para publicar noticias.");
             let titulo = document.getElementById("titulo").value;
@@ -110,7 +107,7 @@
             mostrarNoticias();
         }
 
-        // Función para registrar un nuevo usuario
+        // Funciones para registro e inicio de sesión
         function registrarse() {
             let email = document.getElementById("registro-email").value;
             let password = document.getElementById("registro-password").value;
@@ -121,7 +118,6 @@
             alert("Registro exitoso. Ahora puedes iniciar sesión.");
         }
 
-        // Función para iniciar sesión
         function iniciarSesion() {
             let email = document.getElementById("email").value;
             let password = document.getElementById("password").value;
@@ -132,22 +128,18 @@
             alert("Sesión iniciada como " + usuarioActual);
         }
 
-        // Función para agregar un comentario
-<script src="https://utteranc.es/client.js"
-        repo="Soos-Ramirez/Noticias-para-fracasados"
-        issue-term="pathname"
-        theme="github-dark"
-        crossorigin="anonymous"
-        async>
-</script>
-        }
-
-        // Cargar noticias y comentarios al inicio
+        // Cargar noticias al inicio
         mostrarNoticias();
-        mostrarComentarios();
-    </script>
-</body>
-</html>
 
+        // Cargar el sistema de comentarios de Utterances
+        const script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        script.setAttribute('repo', 'Soos-Ramirez/Noticias-para-fracasados');
+        script.setAttribute('issue-term', 'pathname');
+        script.setAttribute('theme', 'github-dark');
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+        document.getElementById('utterances-comments').appendChild(script);
+    </script>
 </body>
 </html>
