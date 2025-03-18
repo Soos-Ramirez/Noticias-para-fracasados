@@ -47,8 +47,11 @@
         <h1>Noticias para Fracasados</h1>
         
         <div class="registro">
-            <h2>Regístrate</h2>
-            <button onclick="crearUsuario()">Crear Usuario</button>
+            <h2>Registro / Inicio de Sesión</h2>
+            <input type="email" id="email" placeholder="Correo electrónico">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button onclick="registrarUsuario()">Registrarse</button>
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
             <p id="usuario"></p>
         </div>
         
@@ -67,15 +70,10 @@
                 <h2>Encuentran otaku en estado de hibernación en una cueva llena de Doritos</h2>
                 <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
             </div>
-
+            
             <div class="noticia">
-                <h2>Toto es tan fracasado que eligio en Soccer Champs a Bolivar en vez de un equipo de inglaterra</h2>
-                <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque el quiere terminar en Boca.</p>
-            </div>
-
-            <div class="noticia">
-                <h2>llamarte lolo</h2>
-                <p>es un fracasado xd.</p>
+                <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
+                <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
             </div>
         </div>
         
@@ -95,37 +93,42 @@
     </div>
     
     <script>
-        function agregarComentario() {
-            let comentario = document.getElementById("comentario").value;
-            if (comentario.trim() !== "") {
-                let lista = document.getElementById("lista-comentarios");
-                let nuevoComentario = document.createElement("p");
-                nuevoComentario.textContent = comentario;
-                lista.appendChild(nuevoComentario);
-                document.getElementById("comentario").value = "";
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
+        let usuarioActual = localStorage.getItem("usuarioActual") || null;
+
+        if (usuarioActual) {
+            document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+        }
+
+        function registrarUsuario() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            if (email in usuarios) {
+                alert("Este correo ya está registrado.");
+            } else {
+                const palabras1 = ["Otaku", "Gamer", "Waifu", "Toxic", "Noob", "Tryhard", "Bronce", "Friki", "Casual", "Weeb", "Otome", "AFK"];
+                const palabras2 = ["Legendario", "Deluxe", "Definitivo", "Inmortal", "Intenso", "Supremo", "Absoluto", "Místico", "Fatal", "Invencible", "Extremo"];
+                let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
+                usuarios[email] = { password, nombre };
+                localStorage.setItem("usuarios", JSON.stringify(usuarios));
+                alert("Registro exitoso. Tu usuario es: " + nombre);
+                usuarioActual = nombre;
+                localStorage.setItem("usuarioActual", usuarioActual);
+                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
             }
         }
-        
-        function agregarNoticia() {
-            let titulo = document.getElementById("titulo").value;
-            let contenido = document.getElementById("contenido").value;
-            if (titulo.trim() !== "" && contenido.trim() !== "") {
-                let noticias = document.getElementById("noticias");
-                let nuevaNoticia = document.createElement("div");
-                nuevaNoticia.classList.add("noticia");
-                nuevaNoticia.innerHTML = `<h2>${titulo}</h2><p>${contenido}</p>`;
-                noticias.appendChild(nuevaNoticia);
-                document.getElementById("titulo").value = "";
-                document.getElementById("contenido").value = "";
+
+        function iniciarSesion() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            if (email in usuarios && usuarios[email].password === password) {
+                usuarioActual = usuarios[email].nombre;
+                localStorage.setItem("usuarioActual", usuarioActual);
+                alert("Inicio de sesión exitoso. Bienvenido, " + usuarioActual);
+                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
+            } else {
+                alert("Correo o contraseña incorrectos.");
             }
-        }
-        
-        function crearUsuario() {
-            const palabras1 = ["Otaku", "Gamer", "Waifu", "Toxic", "Noob", "Tryhard", "Bronce", "Friki"];
-            const palabras2 = ["Legendario", "Deluxe", "Definitivo", "Inmortal", "Intenso", "Supremo", "Absoluto", "Místico"];
-            
-            let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
-            document.getElementById("usuario").textContent = "Tu usuario: " + nombre;
         }
     </script>
 </body>
