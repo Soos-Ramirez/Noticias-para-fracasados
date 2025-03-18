@@ -40,6 +40,20 @@
             padding: 10px;
             border-radius: 5px;
         }
+        .github-user {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        .github-user img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +61,22 @@
         <h1>Noticias para Fracasados</h1>
 
         <!-- Noticias visibles directamente -->
+        <div id="noticias">
+            <div class="noticia">
+                <h2>Jugador de LoL alcanza rango Diamante, pero sigue sin ducharse</h2>
+                <p>Un joven de 23 años ha logrado llegar a Diamante en League of Legends, pero sus familiares piden ayuda para que se bañe.</p>
+            </div>
+            
+            <div class="noticia">
+                <h2>Nuevo impuesto para los gamers: el gobierno propone el "Gamer Plus"</h2>
+                <p>El gobierno estudia un impuesto especial para jugadores de LoL, Dota y Genshin Impact. "Si tienen dinero para skins, tienen para aportar", afirman.</p>
+            </div>
+            
+            <div class="noticia">
+                <h2>Encuentran otaku en estado de hibernación en una cueva llena de Doritos</h2>
+                <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
+            </div>
+
         <div class="noticia">
             <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
             <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
@@ -61,21 +91,6 @@
             <h2>Kirchnerismo y su relación con los fracasados</h2>
             <p>Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K.</p>
         </div>
-<div id="noticias">
-            <div class="noticia">
-                <h2>Jugador de LoL alcanza rango Diamante, pero sigue sin ducharse</h2>
-                <p>Un joven de 23 años ha logrado llegar a Diamante en League of Legends, pero sus familiares piden ayuda para que se bañe.</p>
-            </div>
-            
-            <div class="noticia">
-                <h2>Nuevo impuesto para los gamers: el kirchnerismo propone el "Gamer Plus"</h2>
-                <p>El gobierno estudia un impuesto especial para jugadores de LoL, Dota y Genshin Impact. "Si tienen dinero para skins, tienen para aportar", afirman.</p>
-            </div>
-            
-            <div class="noticia">
-                <h2>Encuentran otaku en estado de hibernación en una cueva llena de Doritos</h2>
-                <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
-            </div>
 
         <!-- Registro de Usuario -->
         <div class="registro">
@@ -99,46 +114,80 @@
         <div id="utterances-comments">
             <!-- Los comentarios se cargarán aquí -->
         </div>
+
+        <!-- GitHub Login -->
+        <button id="login-btn" onclick="loginWithGitHub()">Iniciar sesión con GitHub</button>
+    </div>
+
+    <div id="github-user" class="github-user" style="display:none;">
+        <img id="github-avatar" src="" alt="GitHub Avatar">
+        <span id="github-username"></span>
     </div>
 
     <script>
-        // Categorías de palabras para generar un nombre de usuario aleatorio
-        const categorias = {
-            friki: ["Goku", "Voldemort", "Hobbit", "Supernova", "Pikachu", "Hyrule", "Elfo", "Zelda", "Quidditch", "Dobby", "Krypton", "Wookiee", "TARDIS", "Shinigami", "Darth", "Wand", "Manga"],
-            otaku: ["Naruto", "Sasuke", "Kagome", "Inuyasha", "Kira", "Chibi", "SailorMoon", "Senpai", "Otaku", "Manga", "Neko", "Kawaii", "Kofuku", "Shinji", "Yuki", "Akira", "Mecha"],
-            lolero: ["Yasuo", "Ahri", "Jinx", "Zed", "Teemo", "Lux", "Ezreal", "Ryze", "Nidalee", "Vayne", "Caitlyn", "Kennen", "Shaco", "MissFortune", "Riven", "Karthus", "Sona"],
-            virgen: ["Beta", "Noob", "Kappa", "Recluta", "SinNovia", "CeroAmigos", "Virgencita", "Hermitaño", "F5", "Pochito", "MemeLord", "ChicoSolitario", "ProfeDeMatemáticas", "ChicoLoco", "RataDeBiblioteca"]
+        const clientId = "TU_CLIENT_ID_DE_GITHUB"; // Aquí deberías colocar tu client ID de GitHub
+        const redirectUri = "TU_REDIRECT_URI"; // Coloca tu URL de redirección aquí (debe coincidir con la que hayas configurado en GitHub)
+        const scope = "user"; // Permiso para obtener los datos de usuario
+
+        // Función para iniciar sesión con GitHub
+        function loginWithGitHub() {
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+        }
+
+        // Aquí se manejará el intercambio del código de autorización
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get("code");
+
+            if (code) {
+                // Obtener el token de acceso de GitHub
+                fetch("https://github.com/login/oauth/access_token", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        client_id: clientId,
+                        client_secret: "TU_CLIENT_SECRET_DE_GITHUB", // Aquí deberías colocar tu client secret de GitHub
+                        code: code,
+                        redirect_uri: redirectUri,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const accessToken = data.access_token;
+                        obtenerDatosUsuario(accessToken);
+                    })
+                    .catch(error => {
+                        console.error("Error al obtener el token de acceso:", error);
+                    });
+            }
         };
 
-        // Función para registrar un usuario con nombre predefinido
-        function registrarse() {
-            let email = document.getElementById("registro-email").value;
-            let password = document.getElementById("registro-password").value;
+        // Función para obtener los datos del usuario de GitHub
+        function obtenerDatosUsuario(token) {
+            fetch("https://api.github.com/user", {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const username = data.login;
+                    const avatarUrl = data.avatar_url;
 
-            if (email.trim() === "" || password.trim() === "") return alert("Completa todos los campos.");
-            
-            // Generar un nombre de usuario friki, otaku, lolero o virgen aleatorio
-            let nombreUsuario = generarNombreUsuario();
-            
-            // Mostrar el nombre de usuario generado
-            document.getElementById("resultado").innerHTML = `Registro exitoso! Tu nombre de usuario es: <strong>${nombreUsuario}</strong>`;
-        }
+                    // Mostrar el nombre de usuario y el avatar de GitHub
+                    document.getElementById("github-avatar").src = avatarUrl;
+                    document.getElementById("github-username").textContent = username;
 
-        // Función para generar un nombre de usuario aleatorio con dos palabras de diferentes categorías
-        function generarNombreUsuario() {
-            let categoria1 = obtenerCategoriaAleatoria();
-            let categoria2 = obtenerCategoriaAleatoria();
-            
-            let palabra1 = categoria1[Math.floor(Math.random() * categoria1.length)];
-            let palabra2 = categoria2[Math.floor(Math.random() * categoria2.length)];
-
-            return palabra1 + palabra2;
-        }
-
-        // Función para obtener una categoría aleatoria
-        function obtenerCategoriaAleatoria() {
-            let categoriasArray = Object.values(categorias);
-            return categoriasArray[Math.floor(Math.random() * categoriasArray.length)];
+                    // Mostrar el área del usuario de GitHub
+                    document.getElementById("github-user").style.display = "flex";
+                    document.getElementById("login-btn").style.display = "none";
+                })
+                .catch(error => {
+                    console.error("Error al obtener los datos de usuario:", error);
+                });
         }
 
         // Función para agregar una noticia
