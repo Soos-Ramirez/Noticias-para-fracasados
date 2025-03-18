@@ -46,21 +46,7 @@
     <div class="container">
         <h1>Noticias para Fracasados</h1>
         
-        <div class="registro">
-            <h2>Registro / Inicio de Sesión</h2>
-            <input type="email" id="email" placeholder="Correo electrónico">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button onclick="registrarUsuario()">Registrarse</button>
-            <button onclick="iniciarSesion()">Iniciar Sesión</button>
-            <p id="usuario"></p>
-        </div>
-        
-        <div id="noticias">
-            <div class="noticia">
-                <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
-                <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
-            </div>
-        </div>
+        <div id="noticias"></div>
         
         <div class="nueva-noticia">
             <h2>Publica tu noticia</h2>
@@ -78,67 +64,31 @@
     </div>
     
     <script>
-        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || {};
-        let usuarioActual = localStorage.getItem("usuarioActual") || null;
-        let comentarios = JSON.parse(localStorage.getItem("comentarios")) || [];
+        let noticias = JSON.parse(localStorage.getItem("noticias")) || [
+            { titulo: "Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra", contenido: "Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca." }
+        ];
 
-        if (usuarioActual) {
-            document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
-        }
-
-        function registrarUsuario() {
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            if (usuarios[email]) {
-                alert("Este correo ya está registrado.");
-            } else {
-                const palabras1 = ["Otaku", "Gamer", "Weeb", "Toxic", "Noob", "Tryhard"];
-                const palabras2 = ["Legendario", "Supremo", "Místico", "Fatal", "Invencible"];
-                let nombre = palabras1[Math.floor(Math.random() * palabras1.length)] + " " + palabras2[Math.floor(Math.random() * palabras2.length)];
-                usuarios[email] = { password: password, nombre: nombre };
-                localStorage.setItem("usuarios", JSON.stringify(usuarios));
-                usuarioActual = nombre;
-                localStorage.setItem("usuarioActual", usuarioActual);
-                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
-                alert("Registro exitoso. Tu usuario es: " + nombre);
-            }
-        }
-
-        function iniciarSesion() {
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            if (usuarios[email] && usuarios[email].password === password) {
-                usuarioActual = usuarios[email].nombre;
-                localStorage.setItem("usuarioActual", usuarioActual);
-                document.getElementById("usuario").textContent = "Usuario: " + usuarioActual;
-                alert("Inicio de sesión exitoso. Bienvenido, " + usuarioActual);
-            } else {
-                alert("Correo o contraseña incorrectos.");
-            }
-        }
-
-        function agregarComentario() {
-            let texto = document.getElementById("comentario").value;
-            if (texto.trim() === "") return alert("El comentario no puede estar vacío.");
-            if (!usuarioActual) return alert("Debes iniciar sesión para comentar.");
-            
-            let comentario = { usuario: usuarioActual, texto: texto };
-            comentarios.push(comentario);
-            localStorage.setItem("comentarios", JSON.stringify(comentarios));
-            mostrarComentarios();
-        }
-
-        function mostrarComentarios() {
-            let lista = document.getElementById("lista-comentarios");
-            lista.innerHTML = "";
-            comentarios.forEach(com => {
-                let p = document.createElement("p");
-                p.innerHTML = `<strong>${com.usuario}:</strong> ${com.texto}`;
-                lista.appendChild(p);
+        function mostrarNoticias() {
+            let noticiasDiv = document.getElementById("noticias");
+            noticiasDiv.innerHTML = "";
+            noticias.forEach(noticia => {
+                let div = document.createElement("div");
+                div.classList.add("noticia");
+                div.innerHTML = `<h2>${noticia.titulo}</h2><p>${noticia.contenido}</p>`;
+                noticiasDiv.appendChild(div);
             });
         }
 
-        mostrarComentarios();
+        function agregarNoticia() {
+            let titulo = document.getElementById("titulo").value;
+            let contenido = document.getElementById("contenido").value;
+            if (titulo.trim() === "" || contenido.trim() === "") return alert("Completa todos los campos.");
+            noticias.push({ titulo, contenido });
+            localStorage.setItem("noticias", JSON.stringify(noticias));
+            mostrarNoticias();
+        }
+
+        mostrarNoticias();
     </script>
 </body>
 </html>
