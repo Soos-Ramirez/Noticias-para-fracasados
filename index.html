@@ -45,20 +45,6 @@
 <body>
     <div class="container">
         <h1>Noticias para Fracasados</h1>
-        
-        <div class="registro">
-            <h2>Registrarse</h2>
-            <input type="email" id="registro-email" placeholder="Correo electrónico">
-            <input type="password" id="registro-password" placeholder="Contraseña">
-            <button onclick="registrarse()">Registrarse</button>
-        </div>
-        
-        <div class="login">
-            <h2>Iniciar sesión</h2>
-            <input type="email" id="email" placeholder="Correo electrónico">
-            <input type="password" id="password" placeholder="Contraseña">
-            <button onclick="iniciarSesion()">Iniciar sesión</button>
-        </div>
 
         <!-- Noticias visibles directamente -->
         <div class="noticia">
@@ -90,21 +76,6 @@
     </div>
 
     <script>
-        // Funciones para registro e inicio de sesión
-        function registrarse() {
-            let email = document.getElementById("registro-email").value;
-            let password = document.getElementById("registro-password").value;
-            if (email.trim() === "" || password.trim() === "") return alert("Completa todos los campos.");
-            alert("Registro exitoso. Ahora puedes iniciar sesión.");
-        }
-
-        function iniciarSesion() {
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            if (email.trim() === "" || password.trim() === "") return alert("Completa los campos de inicio de sesión.");
-            alert("Sesión iniciada como " + email);
-        }
-
         // Cargar el sistema de comentarios de Utterances
         const script = document.createElement('script');
         script.src = 'https://utteranc.es/client.js';
