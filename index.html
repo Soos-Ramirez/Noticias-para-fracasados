@@ -99,17 +99,6 @@
             });
         }
 
-        // Función para mostrar los comentarios almacenados en localStorage
-        function mostrarComentarios() {
-            let listaComentarios = document.getElementById("lista-comentarios");
-            listaComentarios.innerHTML = "";
-            comentarios.forEach(comentario => {
-                let div = document.createElement("div");
-                div.innerHTML = `<strong>${comentario.usuario}:</strong> ${comentario.texto}`;
-                listaComentarios.appendChild(div);
-            });
-        }
-
         // Función para agregar una nueva noticia
         function agregarNoticia() {
             if (!usuarioActual) return alert("Debes iniciar sesión para publicar noticias.");
