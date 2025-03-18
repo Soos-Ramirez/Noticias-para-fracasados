@@ -69,9 +69,9 @@
             <button onclick="agregarNoticia()">Publicar</button>
         </div>
 
-        <!-- Aquí se coloca el script de Utterances para los comentarios -->
+        <!-- Comentarios Utterances -->
         <div id="utterances-comments">
-            <!-- Los comentarios serán cargados aquí -->
+            <!-- Los comentarios se cargarán aquí -->
         </div>
     </div>
 
@@ -134,9 +134,9 @@
         // Cargar el sistema de comentarios de Utterances
         const script = document.createElement('script');
         script.src = 'https://utteranc.es/client.js';
-        script.setAttribute('repo', 'Soos-Ramirez/Noticias-para-fracasados');
-        script.setAttribute('issue-term', 'pathname');
-        script.setAttribute('theme', 'github-dark');
+        script.setAttribute('repo', 'Soos-Ramirez/Noticias-para-fracasados');  // Cambia con tu repositorio
+        script.setAttribute('issue-term', 'pathname');  // Esto permite que cada página tenga su propio issue
+        script.setAttribute('theme', 'github-dark');  // Cambia el tema si lo deseas
         script.setAttribute('crossorigin', 'anonymous');
         script.async = true;
         document.getElementById('utterances-comments').appendChild(script);
