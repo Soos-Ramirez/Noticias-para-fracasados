@@ -47,7 +47,21 @@
         <h1>Noticias para Fracasados</h1>
 
         <!-- Noticias visibles directamente -->
-        <div id="noticias">
+        <div class="noticia">
+            <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
+            <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
+        </div>
+
+        <div class="noticia">
+            <h2>El regreso de los otakus sin bañarse al LoL</h2>
+            <p>Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche.</p>
+        </div>
+
+        <div class="noticia">
+            <h2>Kirchnerismo y su relación con los fracasados</h2>
+            <p>Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K.</p>
+        </div>
+<div id="noticias">
             <div class="noticia">
                 <h2>Jugador de LoL alcanza rango Diamante, pero sigue sin ducharse</h2>
                 <p>Un joven de 23 años ha logrado llegar a Diamante en League of Legends, pero sus familiares piden ayuda para que se bañe.</p>
@@ -63,21 +77,17 @@
                 <p>Un fanático del anime fue hallado rodeado de latas de Monster y paquetes de Ramen instantáneo.</p>
             </div>
 
-        <div class="noticia">
-            <h2>Toto es tan fracasado que eligió en Soccer Champs a Bolívar en vez de un equipo de Inglaterra</h2>
-            <p>Toto, un alumno fracasado, ha decidido elegir a un equipo de Bolivia en vez de uno de Inglaterra, se origina eso porque él quiere terminar en Boca.</p>
+        <!-- Registro de Usuario -->
+        <div class="registro">
+            <h2>Registrarse</h2>
+            <input type="email" id="registro-email" placeholder="Correo electrónico">
+            <input type="password" id="registro-password" placeholder="Contraseña">
+            <button onclick="registrarse()">Registrarse</button>
         </div>
 
-        <div class="noticia">
-            <h2>El regreso de los otakus sin bañarse al LoL</h2>
-            <p>Riot Games reporta un aumento del 200% en jugadores que no se bañan desde el último parche.</p>
-        </div>
+        <div id="resultado"></div>
 
-        <div class="noticia">
-            <h2>Kirchnerismo y su relación con los fracasados</h2>
-            <p>Un nuevo estudio revela que el 90% de los fracasados se identifican con el modelo K.</p>
-        </div>
-
+        <!-- Publicar Noticias -->
         <div class="nueva-noticia">
             <h2>Publica tu noticia</h2>
             <input type="text" id="titulo" placeholder="Título">
@@ -92,6 +102,53 @@
     </div>
 
     <script>
+        // Categorías de palabras para generar un nombre de usuario aleatorio
+        const categorias = {
+            friki: ["Goku", "Voldemort", "Hobbit", "Supernova", "Pikachu", "Hyrule", "Elfo", "Zelda", "Quidditch", "Dobby", "Krypton", "Wookiee", "TARDIS", "Shinigami", "Darth", "Wand", "Manga"],
+            otaku: ["Naruto", "Sasuke", "Kagome", "Inuyasha", "Kira", "Chibi", "SailorMoon", "Senpai", "Otaku", "Manga", "Neko", "Kawaii", "Kofuku", "Shinji", "Yuki", "Akira", "Mecha"],
+            lolero: ["Yasuo", "Ahri", "Jinx", "Zed", "Teemo", "Lux", "Ezreal", "Ryze", "Nidalee", "Vayne", "Caitlyn", "Kennen", "Shaco", "MissFortune", "Riven", "Karthus", "Sona"],
+            virgen: ["Beta", "Noob", "Kappa", "Recluta", "SinNovia", "CeroAmigos", "Virgencita", "Hermitaño", "F5", "Pochito", "MemeLord", "ChicoSolitario", "ProfeDeMatemáticas", "ChicoLoco", "RataDeBiblioteca"]
+        };
+
+        // Función para registrar un usuario con nombre predefinido
+        function registrarse() {
+            let email = document.getElementById("registro-email").value;
+            let password = document.getElementById("registro-password").value;
+
+            if (email.trim() === "" || password.trim() === "") return alert("Completa todos los campos.");
+            
+            // Generar un nombre de usuario friki, otaku, lolero o virgen aleatorio
+            let nombreUsuario = generarNombreUsuario();
+            
+            // Mostrar el nombre de usuario generado
+            document.getElementById("resultado").innerHTML = `Registro exitoso! Tu nombre de usuario es: <strong>${nombreUsuario}</strong>`;
+        }
+
+        // Función para generar un nombre de usuario aleatorio con dos palabras de diferentes categorías
+        function generarNombreUsuario() {
+            let categoria1 = obtenerCategoriaAleatoria();
+            let categoria2 = obtenerCategoriaAleatoria();
+            
+            let palabra1 = categoria1[Math.floor(Math.random() * categoria1.length)];
+            let palabra2 = categoria2[Math.floor(Math.random() * categoria2.length)];
+
+            return palabra1 + palabra2;
+        }
+
+        // Función para obtener una categoría aleatoria
+        function obtenerCategoriaAleatoria() {
+            let categoriasArray = Object.values(categorias);
+            return categoriasArray[Math.floor(Math.random() * categoriasArray.length)];
+        }
+
+        // Función para agregar una noticia
+        function agregarNoticia() {
+            let titulo = document.getElementById("titulo").value;
+            let contenido = document.getElementById("contenido").value;
+            if (titulo.trim() === "" || contenido.trim() === "") return alert("Completa todos los campos.");
+            alert("Noticia publicada: " + titulo);
+        }
+
         // Cargar el sistema de comentarios de Utterances
         const script = document.createElement('script');
         script.src = 'https://utteranc.es/client.js';
